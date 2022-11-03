@@ -1,0 +1,246 @@
+ create database companyWipro;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use companyWipro;
+Database changed
+mysql> create table emp(
+    -> eno int primary key,
+    -> ename varchar(30) not null,
+    -> salary float(10,2),
+    -> pno int(10),
+    -> dno int(10),
+    -> designation varchar(30) not null);
+Query OK, 0 rows affected, 3 warnings (0.03 sec)
+
+mysql> alter table emp
+    -> add foreign key (dno) references dept(dno);
+ERROR 1824 (HY000): Failed to open the referenced table 'dept'
+mysql> create table project(
+    -> pno int primary key,
+    -> pname varchar(30) not null,
+    -> budget float(10,2),
+    -> dno int(10));
+Query OK, 0 rows affected, 2 warnings (0.03 sec)
+
+mysql> create table dept(
+    -> dno int primary key,
+    -> dname varchar(30) not null,
+    -> location varchar(30));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> alter table emp
+    -> add foreign key (dno) references dept(dno);
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+
+mysql> describe emp;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| eno         | int         | NO   | PRI | NULL    |       |
+| ename       | varchar(30) | NO   |     | NULL    |       |
+| salary      | float(10,2) | YES  |     | NULL    |       |
+| designation | varchar(30) | YES  |     | NULL    |       |
+| pno         | int         | YES  |     | NULL    |       |
+| dno         | int         | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+6 rows in set (0.01 sec)
+
+mysql> describe project;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| pno    | int         | NO   | PRI | NULL    |       |
+| pname  | varchar(30) | NO   |     | NULL    |       |
+| budget | float(10,2) | YES  |     | NULL    |       |
+| dno    | int         | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> describe dept;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| dno      | int         | NO   | PRI | NULL    |       |
+| dname    | varchar(30) | NO   |     | NULL    |       |
+| location | varchar(30) | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> insert into emp values(101,"Pooja",18000.64,"Tester",10112,3);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into emp values(102,"Rahul",22000.84,"Devloper",10112,2);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into emp values(103,"Swati",19000.84,"Tester",10132,3);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into emp values(103,"Swati",19000.84,"manager",10132,1);
+ERROR 1062 (23000): Duplicate entry '103' for key 'emp.PRIMARY'
+mysql> insert into emp values(106,"Rupesh",29000.84,"manager",10132,1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into emp values(104,"Rupali",28000.84,"SeniorDeveloper",10112,2);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into emp values(105,"Ram",28000.84,"SeniorDeveloper",10212,2);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into emp values(107,"Naresh",18000.84,"Developer",10212,2);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into emp values(108,"Amit",20000.94,"QualityAnalysis",10212,2);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into emp values(109,"Pravin",21000.94,"QualityAnalysis",10112,3);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into emp values(110,"Amar",29000.94,"Manager",10112,1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from emp;
++-----+--------+----------+-----------------+-------+------+
+| eno | ename  | salary   | designation     | pno   | dno  |
++-----+--------+----------+-----------------+-------+------+
+| 101 | Pooja  | 18000.64 | Tester          | 10112 |    3 |
+| 102 | Rahul  | 22000.84 | Devloper        | 10112 |    2 |
+| 103 | Swati  | 19000.84 | Tester          | 10132 |    3 |
+| 104 | Rupali | 28000.84 | SeniorDeveloper | 10112 |    2 |
+| 105 | Ram    | 28000.84 | SeniorDeveloper | 10212 |    2 |
+| 106 | Rupesh | 29000.84 | manager         | 10132 |    1 |
+| 107 | Naresh | 18000.84 | Developer       | 10212 |    2 |
+| 108 | Amit   | 20000.94 | QualityAnalysis | 10212 |    2 |
+| 109 | Pravin | 21000.94 | QualityAnalysis | 10112 |    3 |
+| 110 | Amar   | 29000.94 | Manager         | 10112 |    1 |
++-----+--------+----------+-----------------+-------+------+
+10 rows in set (0.00 sec)
+
+mysql> insert into project values(10112,"PHP",28000.78,2);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into project values(10212,"Web devlopment",38000.68,2);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into project values(10132,"Aws",32000.68,1);
+Query OK, 1 row affected (0.00 sec)
+mysql> select * from project;
++-------+----------------+----------+------+
+| pno   | pname          | budget   | dno  |
++-------+----------------+----------+------+
+| 10112 | PHP            | 28000.78 |    2 |
+| 10132 | Aws            | 32000.68 |    1 |
+| 10212 | Web devlopment | 38000.68 |    2 |
++-------+----------------+----------+------+
+3 rows in set (0.00 sec)
+mysql> insert into dept values(1, "developer","Mumbai");
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into dept values(2, "Marketing","New Delhi");
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into dept values(3, "Testeing","Chennai");
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from dept;
++-----+-----------+-----------+
+| dno | dname     | location  |
++-----+-----------+-----------+
+|   1 | developer | Mumbai    |
+|   2 | Marketing | New Delhi |
+|   3 | Testeing  | Chennai   |
++-----+-----------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> alter table project
+    -> add hoursNeeded varchar(30);
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from project;
++-------+----------------+----------+------+-------------+
+| pno   | pname          | budget   | dno  | hoursNeeded |
++-------+----------------+----------+------+-------------+
+| 10112 | PHP            | 28000.78 |    2 | NULL        |
+| 10132 | Aws            | 32000.68 |    1 | NULL        |
+| 10212 | Web devlopment | 38000.68 |    2 | NULL        |
++-------+----------------+----------+------+-------------+
+3 rows in set (0.00 sec)
+mysql> alter table project
+    -> rename column pname to projectName;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from project;
++-------+----------------+----------+------+-------------+
+| pno   | projectName    | budget   | dno  | hoursNeeded |
++-------+----------------+----------+------+-------------+
+| 10112 | PHP            | 28000.78 |    2 | NULL        |
+| 10132 | Aws            | 32000.68 |    1 | NULL        |
+| 10212 | Web devlopment | 38000.68 |    2 | NULL        |
++-------+----------------+----------+------+-------------+
+3 rows in set (0.00 sec)
+
+ select dno, sum(salary)
+    -> from emp
+    -> group by dno;
++------+-------------+
+| dno  | sum(salary) |
++------+-------------+
+|    1 |    58001.78 |
+|    2 |   116004.30 |
+|    3 |    58002.42 |
++------+-------------+
+3 rows in set (0.00 sec)
+mysql> SELECT SUM(salary)
+    ->      FROM emp;
++-------------+
+| SUM(salary) |
++-------------+
+|   232008.50 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT dno, sum(Salary), dno FROM emp GROUP BY dno;
++------+-------------+------+
+| dno  | sum(Salary) | dno  |
++------+-------------+------+
+|    1 |    58001.78 |    1 |
+|    2 |   116004.30 |    2 |
+|    3 |    58002.42 |    3 |
++------+-------------+------+
+3 rows in set (0.00 sec)
+mysql> update emp set salary= salary + (salary * 10 / 100) WHERE salary > 20000;
+Query OK, 7 rows affected (0.01 sec)
+Rows matched: 7  Changed: 7  Warnings: 0
+
+mysql> select *from emp;
++-----+--------+----------+-----------------+-------+------+
+| eno | ename  | salary   | designation     | pno   | dno  |
++-----+--------+----------+-----------------+-------+------+
+| 101 | Pooja  | 18000.64 | Tester          | 10112 |    3 |
+| 102 | Rahul  | 24200.92 | Devloper        | 10112 |    2 |
+| 103 | Swati  | 19000.84 | Tester          | 10132 |    3 |
+| 104 | Rupali | 30800.92 | SeniorDeveloper | 10112 |    2 |
+| 105 | Ram    | 30800.92 | SeniorDeveloper | 10212 |    2 |
+| 106 | Rupesh | 31900.92 | manager         | 10132 |    1 |
+| 107 | Naresh | 18000.84 | Developer       | 10212 |    2 |
+| 108 | Amit   | 22001.03 | QualityAnalysis | 10212 |    2 |
+| 109 | Pravin | 23101.03 | QualityAnalysis | 10112 |    3 |
+| 110 | Amar   | 31901.03 | Manager         | 10112 |    1 |
++-----+--------+----------+-----------------+-------+------+
+10 rows in set (0.00 sec)
+mysql> update project set budget= budget + (budget * 5 / 100) WHERE budget > 30000;
+Query OK, 2 rows affected (0.01 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> select *from project;
++-------+----------------+----------+------+-------------+
+| pno   | projectName    | budget   | dno  | hoursNeeded |
++-------+----------------+----------+------+-------------+
+| 10112 | PHP            | 28000.78 |    2 | NULL        |
+| 10132 | Aws            | 33600.71 |    1 | NULL        |
+| 10212 | Web devlopment | 39900.71 |    2 | NULL        |
++-------+----------------+----------+------+-------------+
+3 rows in set (0.00 sec)
