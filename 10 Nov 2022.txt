@@ -1,0 +1,270 @@
+
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| bookinfo           |
+| companywipro       |
+| countrydb          |
+| employeeinfo       |
+| employeesystem     |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
+| world              |
++--------------------+
+10 rows in set (0.01 sec)
+
+mysql> create database Dmart;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> use Dmart;
+Database changed
+mysql> create table product(
+    -> p_id int not null,
+    -> p_name Varchar(20) not null,
+    -> quantity int not null,
+    -> primary key(p_id)
+    -> );
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> insert into product values(101,'Suger',15);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into product values(102,'Gemini sunflower oil',25);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into product values(103,'Toor dal',45);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into product values(104,'Rajma',32);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select *from product;
++------+----------------------+----------+
+| p_id | p_name               | quantity |
++------+----------------------+----------+
+|  101 | Suger                |       15 |
+|  102 | Gemini sunflower oil |       25 |
+|  103 | Toor dal             |       45 |
+|  104 | Rajma                |       32 |
++------+----------------------+----------+
+4 rows in set (0.00 sec)
+
+mysql> create table workers(
+    -> w_id int not null,
+    -> W_name Varchar(20) not null,
+    -> w_branch Varchar(20) not null,
+    -> primary key(w_id)
+    -> );
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> insert into workers values(10,'Raj','Thane');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into workers values(11,'Pooja','Vashi');
+Query OK, 1 row affected (0.10 sec)
+
+mysql> insert into workers values(12,'Swati','Nerul');
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into workers values(13,'krushikesh','Airoli');
+Query OK, 1 row affected (0.12 sec)
+
+mysql> insert into workers values(14,'Shamika','Mulund');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select *from workers;
++------+------------+----------+
+| w_id | W_name     | w_branch |
++------+------------+----------+
+|   10 | Raj        | Thane    |
+|   11 | Pooja      | Vashi    |
+|   12 | Swati      | Nerul    |
+|   13 | krushikesh | Airoli   |
+|   14 | Shamika    | Mulund   |
++------+------------+----------+
+5 rows in set (0.00 sec)
+
+mysql> select workers.w_name,workers.w_branch,product.p_name,product.quantity
+    -> from workers
+    -> inner join product
+    -> on workers.w_id=product.p_id;
+Empty set (0.00 sec)
+
+mysql> select workers.w_name,product.p_name
+    -> from workers
+    -> left join product
+    -> on workers.w_id=product.p_id;
++------------+--------+
+| w_name     | p_name |
++------------+--------+
+| Raj        | NULL   |
+| Pooja      | NULL   |
+| Swati      | NULL   |
+| krushikesh | NULL   |
+| Shamika    | NULL   |
++------------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select workers.w_name,product.p_name
+    -> from workers
+    -> right join product
+    -> on workers.w_id=product.p_id;
++--------+----------------------+
+| w_name | p_name               |
++--------+----------------------+
+| NULL   | Suger                |
+| NULL   | Gemini sunflower oil |
+| NULL   | Toor dal             |
+| NULL   | Rajma                |
++--------+----------------------+
+4 rows in set (0.00 sec)
+
+mysql> select*from workers full jion product;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'jion product' at line 1
+mysql> select*from workers full join product;
++------+------------+----------+------+----------------------+----------+
+| w_id | W_name     | w_branch | p_id | p_name               | quantity |
++------+------------+----------+------+----------------------+----------+
+|   10 | Raj        | Thane    |  104 | Rajma                |       32 |
+|   10 | Raj        | Thane    |  103 | Toor dal             |       45 |
+|   10 | Raj        | Thane    |  102 | Gemini sunflower oil |       25 |
+|   10 | Raj        | Thane    |  101 | Suger                |       15 |
+|   11 | Pooja      | Vashi    |  104 | Rajma                |       32 |
+|   11 | Pooja      | Vashi    |  103 | Toor dal             |       45 |
+|   11 | Pooja      | Vashi    |  102 | Gemini sunflower oil |       25 |
+|   11 | Pooja      | Vashi    |  101 | Suger                |       15 |
+|   12 | Swati      | Nerul    |  104 | Rajma                |       32 |
+|   12 | Swati      | Nerul    |  103 | Toor dal             |       45 |
+|   12 | Swati      | Nerul    |  102 | Gemini sunflower oil |       25 |
+|   12 | Swati      | Nerul    |  101 | Suger                |       15 |
+|   13 | krushikesh | Airoli   |  104 | Rajma                |       32 |
+|   13 | krushikesh | Airoli   |  103 | Toor dal             |       45 |
+|   13 | krushikesh | Airoli   |  102 | Gemini sunflower oil |       25 |
+|   13 | krushikesh | Airoli   |  101 | Suger                |       15 |
+|   14 | Shamika    | Mulund   |  104 | Rajma                |       32 |
+|   14 | Shamika    | Mulund   |  103 | Toor dal             |       45 |
+|   14 | Shamika    | Mulund   |  102 | Gemini sunflower oil |       25 |
+|   14 | Shamika    | Mulund   |  101 | Suger                |       15 |
++------+------------+----------+------+----------------------+----------+
+20 rows in set (0.00 sec)
+
+mysql>
+mysql> update workers set w_id=101 where w_name='Raj';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update workers set w_id=102 where w_name='Pooja';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update workers set w_id=103 where w_name='Swati';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update workers set w_id=104 where w_name='krushikesh';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update workers set w_id=105 where w_name='Shamika';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select *from workers;
++------+------------+----------+
+| w_id | W_name     | w_branch |
++------+------------+----------+
+|  101 | Raj        | Thane    |
+|  102 | Pooja      | Vashi    |
+|  103 | Swati      | Nerul    |
+|  104 | krushikesh | Airoli   |
+|  105 | Shamika    | Mulund   |
++------+------------+----------+
+5 rows in set (0.00 sec)
+
+mysql> select workers.w_name,workers.w_branch,product.p_name,product.quantity
+    -> from workers
+    -> inner join product
+    -> on workers.w_id=product.p_id;
++------------+----------+----------------------+----------+
+| w_name     | w_branch | p_name               | quantity |
++------------+----------+----------------------+----------+
+| Raj        | Thane    | Suger                |       15 |
+| Pooja      | Vashi    | Gemini sunflower oil |       25 |
+| Swati      | Nerul    | Toor dal             |       45 |
+| krushikesh | Airoli   | Rajma                |       32 |
++------------+----------+----------------------+----------+
+4 rows in set (0.00 sec)
+
+mysql> select workers.w_name,product.p_name
+    -> from workers
+    -> left join product
+    -> on workers.w_id=product.p_id;
++------------+----------------------+
+| w_name     | p_name               |
++------------+----------------------+
+| Raj        | Suger                |
+| Pooja      | Gemini sunflower oil |
+| Swati      | Toor dal             |
+| krushikesh | Rajma                |
+| Shamika    | NULL                 |
++------------+----------------------+
+5 rows in set (0.00 sec)
+
+mysql> select workers.w_name,product.p_name
+    -> from workers
+    -> right join product
+    -> on workers.w_id=product.p_id;
++------------+----------------------+
+| w_name     | p_name               |
++------------+----------------------+
+| Raj        | Suger                |
+| Pooja      | Gemini sunflower oil |
+| Swati      | Toor dal             |
+| krushikesh | Rajma                |
++------------+----------------------+
+4 rows in set (0.00 sec)
+
+mysql> select workers.w_branch,product.quantity
+    -> from workers
+    -> right join product
+    -> on workers.w_id=product.p_id;
++----------+----------+
+| w_branch | quantity |
++----------+----------+
+| Thane    |       15 |
+| Vashi    |       25 |
+| Nerul    |       45 |
+| Airoli   |       32 |
++----------+----------+
+4 rows in set (0.00 sec)
+
+mysql> select*from workers full join product;
++------+------------+----------+------+----------------------+----------+
+| w_id | W_name     | w_branch | p_id | p_name               | quantity |
++------+------------+----------+------+----------------------+----------+
+|  101 | Raj        | Thane    |  104 | Rajma                |       32 |
+|  101 | Raj        | Thane    |  103 | Toor dal             |       45 |
+|  101 | Raj        | Thane    |  102 | Gemini sunflower oil |       25 |
+|  101 | Raj        | Thane    |  101 | Suger                |       15 |
+|  102 | Pooja      | Vashi    |  104 | Rajma                |       32 |
+|  102 | Pooja      | Vashi    |  103 | Toor dal             |       45 |
+|  102 | Pooja      | Vashi    |  102 | Gemini sunflower oil |       25 |
+|  102 | Pooja      | Vashi    |  101 | Suger                |       15 |
+|  103 | Swati      | Nerul    |  104 | Rajma                |       32 |
+|  103 | Swati      | Nerul    |  103 | Toor dal             |       45 |
+|  103 | Swati      | Nerul    |  102 | Gemini sunflower oil |       25 |
+|  103 | Swati      | Nerul    |  101 | Suger                |       15 |
+|  104 | krushikesh | Airoli   |  104 | Rajma                |       32 |
+|  104 | krushikesh | Airoli   |  103 | Toor dal             |       45 |
+|  104 | krushikesh | Airoli   |  102 | Gemini sunflower oil |       25 |
+|  104 | krushikesh | Airoli   |  101 | Suger                |       15 |
+|  105 | Shamika    | Mulund   |  104 | Rajma                |       32 |
+|  105 | Shamika    | Mulund   |  103 | Toor dal             |       45 |
+|  105 | Shamika    | Mulund   |  102 | Gemini sunflower oil |       25 |
+|  105 | Shamika    | Mulund   |  101 | Suger                |       15 |
++------+------------+----------+------+----------------------+----------+
+20 rows in set (0.00 sec)
